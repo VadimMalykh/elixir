@@ -1,8 +1,5 @@
 import Config
 
-# Only in tests, remove the complexity from the password hashing algorithm
-config :bcrypt_elixir, :log_rounds, 1
-
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -20,14 +17,17 @@ config :pento, Pento.Repo,
 # you can enable the server option below.
 config :pento, PentoWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "cOQ8XyJVXROaZcEmL/cb5RskiDBc+jiAgIG9BcuLuEAYxIMA/pSkQz+dPAU3bHq1",
+  secret_key_base: "qEkaxFR/WiMJgFhjgneO1Y48m7JM4bb+yV0Lmy1I/GKoWWO1BRA6u2Qf5yoN6Pfw",
   server: false
 
 # In test we don't send emails.
 config :pento, Pento.Mailer, adapter: Swoosh.Adapters.Test
 
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
+
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime

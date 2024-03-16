@@ -8,16 +8,16 @@ defmodule Pento.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
-      Pento.Repo,
-      # Start the Telemetry supervisor
       PentoWeb.Telemetry,
-      # Start the PubSub system
+      Pento.Repo,
+      {DNSCluster, query: Application.get_env(:pento, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Pento.PubSub},
-      # Start the Endpoint (http/https)
-      PentoWeb.Endpoint
+      # Start the Finch HTTP client for sending emails
+      {Finch, name: Pento.Finch},
       # Start a worker by calling: Pento.Worker.start_link(arg)
-      # {Pento.Worker, arg}
+      # {Pento.Worker, arg},
+      # Start to serve requests, typically the last entry
+      PentoWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
